@@ -37,7 +37,7 @@ const Bookings = () => {
             <div className="w-48">
             {booking.place.images.length > 0 &&
             booking?.place.images && (
-              <img className='object-cover h-full' src={`${imagesURL}${booking.place.images[0]}`} alt={booking.place.title} />
+              <img className='object-cover h-full' src={`${booking.place.images[0]}`} alt={booking.place.title} />
             )}
             </div>
             <div className='py-3 pr-3 grow'>
