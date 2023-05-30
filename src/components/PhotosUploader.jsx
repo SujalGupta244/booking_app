@@ -35,6 +35,7 @@ const PhotosUploader = (props) => {
     for (let i = 0; i < files.length; i++) {
       data.append("photos", files[i]);
     }
+    // console.log(data)
     const response = await axios.post(uploadPhotoURL, data, {
       headers: { "Content-Type": "multipart/form-data" },
     });

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, Navigate, useParams } from "react-router-dom";
 import {
@@ -32,9 +32,11 @@ const Account = () => {
     navigate("/");
     dispatch(addUser(data));
   };
-
-  if (!token) {
-    return <Navigate to="/login" />;
+  
+  if (!username || !email) {
+    return (
+      <Navigate to="/login" />
+    )
   }
 
   if (!ready) {

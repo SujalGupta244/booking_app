@@ -71,7 +71,7 @@ const PlacesForm = () => {
       })
       const data = await response.data
       navigate("/account/places")
-      return data
+      // return data
     }
 
   }

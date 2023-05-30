@@ -13,6 +13,12 @@ const placesSlice = createSlice({
             const places = action.payload
             state.places.push(...places)
         },
+        removeAllPlaces : (state, action) =>{
+            state.places = []
+        },
+        removeUserPlaces : (state, action) =>{
+            state.userPlaces = []
+        },
         addUserPlaces : (state, action) =>{
             const place = action.payload
             state.userPlaces.push(...place)
@@ -20,17 +26,17 @@ const placesSlice = createSlice({
         updateUserPlace : (state, action) =>{
             const id = action.payload._id
             const place = action.payload
-            state.userPlaces = state.userPlaces.filter(place => place._id != id)
-            state.userPlaces.push(place)
+            const placeIndex = state.userPlaces.findIndex(place => place._id == id)
+            state.userPlaces.splice(placeIndex,1, place)
         }
     }
 })
 
 
-export const {addAllPlaces, addUserPlaces, updateUserPlace} = placesSlice.actions
+export const {addAllPlaces, removeAllPlaces, addUserPlaces, removeUserPlaces, updateUserPlace} = placesSlice.actions
 
 export default placesSlice.reducer
 
 export const selectPlaces = (store) => store.places.userPlaces
 export const selectAllPlaces = (store) => store.places.places
-export const selectSinglePlace = (store, id) => store.places.places.filter(place => place._id === id)
+export const selectSinglePlace = (store, id) => store.places.places.find(place => place._id === id)

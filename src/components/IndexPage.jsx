@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addAllPlaces, selectAllPlaces } from '../features/places/placesSlice'
+import { addAllPlaces, removeAllPlaces, selectAllPlaces } from '../features/places/placesSlice'
 import useLink from '../hooks/useLink'
 import PlaceItem from './PlaceItem'
 
@@ -30,6 +30,7 @@ const IndexPage = () => {
   const getAllPlaces = async() =>{
     const res = await axios.get(placeURL)
     const data = await res.data
+    dispatch(removeAllPlaces())
     dispatch(addAllPlaces(data))
     return data
   }

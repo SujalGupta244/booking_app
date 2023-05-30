@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useGlobalContext } from '../UserContext'
 import { useDispatch, useSelector } from 'react-redux'
 // import { selectCurrentUser } from '../features/auth/authSlice'
 import { addUser } from "../features/auth/authSlice";
+import useAuth from '../hooks/useAuth'
 
 
 const url = "/auth/login"
@@ -13,6 +14,8 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { username, email : userEmail } = useAuth();
 
 
   const dispatch = useDispatch()
@@ -37,6 +40,12 @@ const Login = () => {
       console.log(e.response.data.message);
     }
 
+  }
+
+  if (username && userEmail) {
+    return (
+      <Navigate to="/account" />
+    )
   }
 
 

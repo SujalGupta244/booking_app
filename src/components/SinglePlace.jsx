@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { selectSinglePlace } from '../features/places/placesSlice'
 import useLink from '../hooks/useLink'
@@ -17,10 +17,13 @@ const SinglePlace = () => {
 
     const {id} = useParams()
     
+    const dispatch = useDispatch()
+    
+    const singlePlace = useSelector(store => selectSinglePlace(store, id))
+    
     const [bookingDetails,setBookingDetails] = useState({});
 
-    const singlePlace = useSelector(store => selectSinglePlace(store, id))
-    const {_id,title ,images ,address ,description ,perks ,extraInfo ,checkIn ,checkOut ,maxGuests ,price} = singlePlace[0]
+    const {_id,title ,images ,address ,description ,perks ,extraInfo ,checkIn ,checkOut ,maxGuests ,price} = singlePlace ? singlePlace : JSON.parse(localStorage.getItem("place"))
 
     const fetchBookings = async() =>{
         const response = await axios.get(bookingURL)
@@ -30,13 +33,17 @@ const SinglePlace = () => {
             if(booking.place._id === _id){
                 setBookingDetails(booking)
             }
-            console.log(booking.place,singlePlace[0]);
+            // console.log(booking.place,singlePlace);
         });
         return data;
     }
     
 
     useEffect(()=>{
+        if(singlePlace && Object.keys(singlePlace).length){
+            localStorage.setItem("place",JSON.stringify(singlePlace))
+            console.log("change in place");
+        }
         fetchBookings()
     },[])
 
@@ -51,7 +58,7 @@ const SinglePlace = () => {
                 </svg>
                 {address}
             </a>
-            <PlaceGallary {...singlePlace[0]}/>
+            <PlaceGallary {...(singlePlace || JSON.parse(localStorage.getItem('place')))} />
             {Object.keys(bookingDetails).length > 0 && (
                 <div className="bg-white p-4 mt-4 rounded-2xl flex justify-between">
                     <div className="gap-2 py-2">
@@ -98,7 +105,7 @@ const SinglePlace = () => {
                     Max number of guests: {maxGuests} 
                 </div>
                 <div >
-                    <BookingWidget place={singlePlace[0]} price={price}/>
+                    <BookingWidget place={singlePlace} price={price}/>
                 </div>
             </div>
             <div className='bg-white -mx-8 px-8 py-8 border-t'>

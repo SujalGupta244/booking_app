@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { selectPlaces } from '../features/places/placesSlice';
+import { removeUserPlaces, selectPlaces } from '../features/places/placesSlice';
 import useLink from '../hooks/useLink';
 import AccountNav from './AccountNav';
 import PlacesForm from './PlacesForm';
@@ -20,6 +20,7 @@ const Places = () => {
   const loadPlaces = async() =>{
     const response = await axios.get(userPlaceURL)
     const data = await response.data
+    dispatch(removeUserPlaces())
     dispatch(addUserPlaces(data))
   }
 

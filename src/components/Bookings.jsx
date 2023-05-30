@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectCurrentBookings, addBookings } from '../features/bookings/bookingSlice'
+import { selectCurrentBookings, addBookings, removeAllBookings } from '../features/bookings/bookingSlice'
 import useLink from '../hooks/useLink'
 import AccountNav from './AccountNav'
 import { Link } from 'react-router-dom'
@@ -20,12 +20,13 @@ const Bookings = () => {
     const fetchBookings = async() =>{
         const response = await axios.get(bookingURL)
         const data = await response.data
+        dispatch(removeAllBookings())
         dispatch(addBookings(data))
         console.log(data);
     }
-
+    
     useEffect(()=>{
-        fetchBookings()
+      fetchBookings()
     },[])
 
   return (
