@@ -30,7 +30,7 @@ const Header = () => {
       dispatch(addUser(data))
       // navigate('/account')
     })
-  },[token])
+  },[])
 
   // console.log(token);
   return (
