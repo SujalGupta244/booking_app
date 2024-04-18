@@ -60,7 +60,7 @@ const Places = () => {
             <Link key={index} to={`/account/places/${place._id}`} className='cursor-pointer flex gap-4 bg-gray-100 p-4 rounded-2xl'>
               <div className="flex w-32 h-32 bg-gray-300 shrink-0">
                 {!!place.images && (
-                  <img className='object-cover' src={`${place.images[0]}`} alt={place.title} />
+                  <img className='object-cover' src={`${place.images[0]?.url}`} alt={place.title} />
                 )} 
               </div>
               <div className="grow-0 shrink">

@@ -12,7 +12,7 @@ const Place = (props) => {
     <Link  to={`/place/${_id}`} >
         <div className="bg-gray-500 mb-2 rounded-2xl flex">
         {images.length > 0 &&(
-            <img className='rounded-2xl object-cover aspect-square' src={`${images?.[0]}`} alt="" />
+            <img className='rounded-2xl object-cover aspect-square' src={`${images[0]?.url}`} alt="" />
         )}
         </div>
         <h2 className="font-bold">{address}</h2>

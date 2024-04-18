@@ -91,8 +91,8 @@ const PhotosUploader = (props) => {
             <div className="h-32 flex relative" key={link}>
               <img
                 className="rounded-2xl w-full object-cover"
-                src={`${link}`}
-                alt={link}
+                src={`${link.url}`}
+                alt={link.url}
               />
               <button className="cursor-pointer absolute bottom-1 right-1 text-white bg-black p-2 rounded-full bg-opacity-50" onClick={(e) => removePhoto(e, link)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

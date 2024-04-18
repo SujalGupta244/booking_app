@@ -23,7 +23,7 @@ const PlaceGallary = (props) => {
                     </div>
                     {images?.length > 0 && 
                         images.map(image => (
-                            <img className='md:w-3/6 m-auto' src={`${image}`} alt="" />
+                            <img className='md:w-3/6 m-auto' src={`${image.url}`} alt="" />
                         ))
                     }
                 </div>
