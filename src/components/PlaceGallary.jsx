@@ -33,14 +33,14 @@ const PlaceGallary = (props) => {
 
   return (
     <div className="relative">
-      <div className="h-32 sm:h-lg rounded-2xl overflow-hidden mt-2 grid gap-2 grid-cols-[2fr_1fr] overflow-hidden">
-        {images?.length > 0 && (
+      <div className="h-32 sm:h-lg rounded-2xl overflow-hidden mt-2 grid gap-2 grid-cols-[2fr_1fr]">
+        {images?.length > 2 && (
           <>
             <div className="">
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="cursor-pointer aspect-square object-cover"
-                src={`${images[0]}`}
+                src={`${images[0]?.url}`}
                 alt={`${title}`}
               />
             </div>
@@ -48,13 +48,13 @@ const PlaceGallary = (props) => {
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="cursor-pointer aspect-square object-cover"
-                src={`${images[1]}`}
+                src={`${images[1]?.url}`}
                 alt={`${title}`}
               />
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="cursor-pointer aspect-square object-cover"
-                src={`${images[2]}`}
+                src={`${images[2]?.url}`}
                 alt={`${title}`}
               />
             </div>
