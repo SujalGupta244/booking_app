@@ -49,7 +49,7 @@ const SinglePlace = () => {
 
     
     return (
-        <div className='mt-8 bg-gray-100 px-8 pt-4 w-3/4 m-auto'>
+        <div className='mt-8 bg-gray-100 px-8 pt-4 sm:w-3/4 m-auto'>
             <h1 className='text-3xl'>{title}</h1>
             <a className='gap-1 my-3 block capitalize font-semibold underline' href={`https://maps.google.com/?q=${address}`} target="_blank">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -94,8 +94,8 @@ const SinglePlace = () => {
                     </div>
                 </div>
             )}
-            <div className=" mb-8 grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 mt-8">
-                <div >
+            <div className=" mb-8 flex-row sm:grid sm:grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 mt-8">
+                <div className='mb-4 sm:mb-0'>
                     <div className="my-4">
                         <h2 className='font-semibold text-2xl'>Description</h2>
                         {description}
