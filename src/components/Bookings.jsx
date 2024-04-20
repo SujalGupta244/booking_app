@@ -34,14 +34,14 @@ const Bookings = () => {
       <AccountNav/>
       {currentBookings.length > 0 && 
         currentBookings.map(booking =>(
-          <Link to={`/place/${booking.place._id}`} className="flex gap-4 bg-gray-200 rounded-2xl overflow-hidden mt-8" key={booking._id}>
-            <div className="w-48">
+          <Link to={`/place/${booking.place._id}`} className="flex-row md:flex gap-4 bg-gray-200 rounded-2xl overflow-hidden mt-8" key={booking._id}>
+            <div className="md:w-48">
             {booking.place.images.length > 0 &&
             booking?.place.images && (
-              <img className='object-cover h-full' src={`${booking.place.images[0]}`} alt={booking.place.title} />
+              <img className='object-cover h-full rounded-md' src={`${booking.place.images[0].url}`} alt={booking.place.title} />
             )}
             </div>
-            <div className='py-3 pr-3 grow'>
+            <div className='py-3 pr-3 grow mb-8 md:mb-0'>
               <h2 className='text-xl'>{booking.place.title}</h2>
               <div className=" flex gap-2 border-t border-gray-300 mt-2 py-2">
                 <div className="flex gap-1">
@@ -60,14 +60,14 @@ const Bookings = () => {
                   {format(new Date(booking.checkOut), 'yyyy-mm-dd')}
                 </div>
               </div>
-              <div className="text-xl flex items-center gap-2">
+              <div className="md:text-xl flex items-center gap-2">
                 <div className="flex items-center gap-1">
-                  <FaRegMoon/>
+                  <FaRegMoon />
                   {differenceInCalendarDays(new Date(booking.checkOut) , new Date(booking.checkIn))} nights
                 </div>
                 |
-                <div className="flex items-center gap-1 text-2xl">
-                  <FaRegCreditCard/>
+                <div className="flex items-center gap-1 md:text-xl">
+                  <FaRegCreditCard />
                   Total Price: <FaRupeeSign />{booking.price}
                 </div>
               </div>
