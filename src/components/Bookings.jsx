@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectCurrentBookings, addBookings, removeAllBookings } from '../features/bookings/bookingSlice'
+import { selectCurrentBookings, addBookings, removeAllBookings , removeBooking} from '../features/bookings/bookingSlice'
 import useLink from '../hooks/useLink'
 import AccountNav from './AccountNav'
 import { Link } from 'react-router-dom'
@@ -22,7 +22,18 @@ const Bookings = () => {
         const data = await response.data
         dispatch(removeAllBookings())
         dispatch(addBookings(data))
-        console.log(data);
+        // console.log(data);
+      }
+      
+      const deleteBooking = async(e, booking_id) =>{
+        e.stopPropagation();
+        e.preventDefault()
+        const response = await axios.post(`${bookingURL}/delete`,{
+          booking_id
+        })
+
+        dispatch(removeBooking(booking_id))
+        console.log(response.data)
     }
     
     useEffect(()=>{
@@ -60,16 +71,19 @@ const Bookings = () => {
                   {format(new Date(booking.checkOut), 'yyyy-mm-dd')}
                 </div>
               </div>
-              <div className="md:text-xl flex items-center gap-2">
-                <div className="flex items-center gap-1">
-                  <FaRegMoon />
-                  {differenceInCalendarDays(new Date(booking.checkOut) , new Date(booking.checkIn))} nights
+              <div className="md:text-xl md:flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    <FaRegMoon />
+                    {differenceInCalendarDays(new Date(booking.checkOut) , new Date(booking.checkIn))} nights
+                  </div>
+                  |
+                  <div className="flex items-center gap-1 md:text-xl">
+                    <FaRegCreditCard />
+                    Total Price: <FaRupeeSign />{booking.price}
+                  </div>
                 </div>
-                |
-                <div className="flex items-center gap-1 md:text-xl">
-                  <FaRegCreditCard />
-                  Total Price: <FaRupeeSign />{booking.price}
-                </div>
+                <button className='mt-3 py-1 px-4 rounded-full bg-primary text-white' onClick={(e)=>deleteBooking(e, booking._id)}>delete</button>
               </div>
             </div>
           </Link>
