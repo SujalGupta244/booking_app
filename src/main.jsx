@@ -6,13 +6,16 @@ import './index.css'
 import {UserContext} from './UserContext'
 import {Provider} from 'react-redux'
 import store from './app/store'
+import { PayPalScriptProvider} from "@paypal/react-paypal-js";
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       {/* <UserContext> */}
       <Provider store={store}>
-        <App />
+        <PayPalScriptProvider options={{ clientId: "test" }}>
+          <App />
+        </PayPalScriptProvider>
       </Provider>
       {/* </UserContext> */}
     </BrowserRouter>

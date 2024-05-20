@@ -5,25 +5,31 @@ import axios from 'axios'
 import useLink from '../hooks/useLink'
 import {useNavigate} from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
+import { PayPalButtons } from "@paypal/react-paypal-js";
 
-const {bookingURL} = useLink()
+const {bookingURL, createPayURL, capturePayURL} = useLink()
 
 const BookingWidget = (props) => {
     const {price, place} = props
 
     const {username} = useAuth()
-
-    
+    const now = new Date();
     const navigate = useNavigate()
     
     const [bookingDetails, setBookingDetails] = useState({name: '' , mobileNo: '',checkIn: '', checkOut: '' , guests: 1})
 
     let numberOfNights = 0;
-
-    if(bookingDetails){
+    
+    if(bookingDetails.checkIn && bookingDetails.checkOut &&
+        differenceInCalendarDays(new Date(bookingDetails.checkIn) , new Date()) >= 0 && 
+        differenceInCalendarDays(new Date(bookingDetails.checkOut) , new Date(bookingDetails.checkIn)) >= 0){
         numberOfNights = differenceInCalendarDays(new Date(bookingDetails.checkOut), new Date(bookingDetails.checkIn))
-    }
+        if(!username) alert("Please Login for booking");
 
+        // console.log(bookingDetails.checkIn , now.getDate() , bookingDetails.checkOut , bookingDetails.checkIn)
+
+    }
+    
     const handleChange = (e) =>{
         const {name, value} = e.target        
         setBookingDetails(prev =>(
@@ -41,8 +47,9 @@ const BookingWidget = (props) => {
 
     const handleSubmit = (e) =>{
         e.preventDefault()
+        console.log(username)
         bookingPlaceRequest()
-        .then(booking => navigate(`/account/bookings`))
+        .then((booking) => navigate(`/account/bookings`))
         
         // console.log(bookingDetails);
     }
@@ -52,6 +59,44 @@ const BookingWidget = (props) => {
     useEffect(()=>{
         setBookingDetails({...bookingDetails, name: username})
     },[username])
+
+
+
+    const createOrder = async ()=> {
+        const resp = await axios.post(createPayURL, {
+            product:{
+                    id: "YOUR_PRODUCT_ID",
+                    quantity: "YOUR_PRODUCT_QUANTITY",
+                    cost: numberOfNights * price
+                },
+            },
+            {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const data = await resp.data;
+        return data.id;
+    }
+    
+    const onApprove = async(data) => {
+        const resp = await axios.post(capturePayURL, {
+              orderID: data.orderID
+            })
+        //   .then((response) => response.json())
+        //   .then((orderData) => {
+        //         const name = orderData.payer.name.given_name;
+        //         alert(`Transaction completed by ${name}`);
+        //   })
+        const respData = await resp.data;
+        console.log(respData)
+        // handleSubmit()
+        bookingPlaceRequest()
+        .then((booking) => navigate(`/account/bookings`))
+        return respData;
+
+    }
+
 
   return (
     <div className="bg-white shadow p-4 rounded-2xl">
@@ -83,14 +128,20 @@ const BookingWidget = (props) => {
                 <input onChange={(e) => handleChange(e)}  type="tel" name="mobileNo" value={bookingDetails.mobileNo} />
             </div>
         )}
-        <button onClick={handleSubmit} className='primary mt-4 flex justify-center gap-4'>
-            Book this place
-            {numberOfNights > 0 && (
-                <span className='flex items-center'>
-                    <FaRupeeSign/>{numberOfNights *price}
-                </span>
-            )}
-        </button>
+        {numberOfNights <= 0 &&
+        <button className='primary mt-4 flex justify-center gap-4 mb-2'>
+                Book this place
+        </button>}
+        {numberOfNights > 0 && username && (
+            <div className='bg-primary text-white rounded-md text-center p-2 mb-2 text-2xl flex items-center justify-center'>
+                <FaRupeeSign />{numberOfNights *price}
+            </div>
+        )}
+        {numberOfNights > 0 && username && 
+        <PayPalButtons
+            createOrder={createOrder}
+            onApprove={onApprove}
+        />}
     </div>
   )
 }

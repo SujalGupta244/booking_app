@@ -10,8 +10,10 @@ const useLink = () => {
     const placesPhotoURL = "/upload/by-link"; 
     const uploadPhotoURL = "/upload/direct";
     const removePhotoURL = "/upload/remove";
+    const createPayURL = "/paypal/createOrder"
+    const capturePayURL = "/paypal/captureOrder"
     
-  return {baseURL, refreshURL, imagesURL, placeURL, userPlaceURL, placesPhotoURL, uploadPhotoURL, removePhotoURL, bookingURL}
+  return {baseURL, refreshURL, imagesURL, placeURL, userPlaceURL, placesPhotoURL, uploadPhotoURL, removePhotoURL, bookingURL, createPayURL, capturePayURL}
 }
 
 export default useLink
