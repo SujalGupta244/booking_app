@@ -19,7 +19,8 @@ const BookingWidget = (props) => {
     const [bookingDetails, setBookingDetails] = useState({name: '' , mobileNo: '',checkIn: '', checkOut: '' , guests: 1})
 
     let numberOfNights = 0;
-    
+    const pattern = new RegExp(/^(?!.*(\d)\1{9})[0-9]{10}$/);
+    let mobileNoValid = pattern.test(bookingDetails.mobileNo);
     if(bookingDetails.checkIn && bookingDetails.checkOut &&
         differenceInCalendarDays(new Date(bookingDetails.checkIn) , new Date()) >= 0 && 
         differenceInCalendarDays(new Date(bookingDetails.checkOut) , new Date(bookingDetails.checkIn)) >= 0){
@@ -137,7 +138,7 @@ const BookingWidget = (props) => {
                 <FaRupeeSign />{numberOfNights *price}
             </div>
         )}
-        {numberOfNights > 0 && username && 
+        {numberOfNights > 0 && username  && mobileNoValid && 
         <PayPalButtons
             createOrder={createOrder}
             onApprove={onApprove}
